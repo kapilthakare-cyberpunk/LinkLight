@@ -58,7 +58,6 @@ Status: **passing**
 
 ## Known limitations
 
-- no persisted settings UI yet
 - DNS validation is currently a lightweight host-parse hint, not a full resolver check
 - no automated test suite is included in the final repo because the local Swift toolchain in this environment could build the app target but did not expose a usable test framework module for the package test target
 
@@ -82,3 +81,14 @@ Users can now change:
 - sample history size
 
 Saving settings updates persisted values and reapplies configuration to the live monitor immediately.
+
+
+## Final polish and release prep
+
+This pass adds:
+- a sandbox entitlements plist at `Resources/LinkLight.entitlements`
+- stronger DNS resolution using `getaddrinfo`
+- a GitHub Actions workflow for macOS builds
+- a simple release helper script for producing a release binary
+
+Note: the current project still builds as a SwiftPM executable, not a fully signed `.app` bundle. Packaging, signing, and notarization are the final distribution steps left.

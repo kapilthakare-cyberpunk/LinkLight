@@ -80,8 +80,21 @@ swift run
 - Default flakiness latency threshold: `500ms`
 - The app is intentionally lightweight and local-first
 
-## Roadmap
+## Polish and release
 
-- Better DNS verification
+- Sandboxed entitlements file included at `Resources/LinkLight.entitlements`
+- DNS resolution upgraded beyond basic host parsing
+- GitHub Actions workflow added for macOS builds
+- Release helper script added at `scripts_release.sh`
+
+## Remaining roadmap
+
 - Start at login support
-- Sandboxed packaging and release automation
+- App bundle packaging and signing
+- Notarization and distribution automation
+
+## Files added for release prep
+
+- `.github/workflows/macos.yml` — CI build on macOS
+- `Resources/LinkLight.entitlements` — sandbox entitlement template
+- `scripts_release.sh` — helper script for release binary export

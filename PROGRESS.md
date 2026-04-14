@@ -1,9 +1,9 @@
 # LinkLight Project Progress
 
 ## Status Summary
-- **Current Phase:** Core implementation complete
+- **Current Phase:** Final polish complete
 - **Last Update:** 2026-04-14
-- **Overall Completion:** ~93%
+- **Overall Completion:** ~98%
 
 ## Task Tracker
 - [x] **Task 1: Project Scaffolding & SPM Setup**
@@ -11,7 +11,7 @@
 - [x] **Task 3: Advanced Reachability Check (Periodic check & flakiness detection)**
 - [x] **Task 4: UI Implementation (Menu bar icon & popover)**
 - [x] **Task 5: Settings & Persistence**
-- [ ] **Task 6: Final Polish & App Sandbox Entitlements**
+- [x] **Task 6: Final Polish & App Sandbox Entitlements**
 
 ## Completed in this pass
 - Normalized source tree under `Sources/LinkLight`
@@ -25,7 +25,6 @@
 - Rebuilt and validated the package successfully
 
 ## Remaining work
-- Persist user settings with `UserDefaults`
-- Add a preferences surface for endpoint and interval
-- Improve DNS validation beyond host parsing
-- Add app packaging and sandbox/release setup
+- Add start-at-login support
+- Add app bundle packaging and signing
+- Add notarization/distribution automation

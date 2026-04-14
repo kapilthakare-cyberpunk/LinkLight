@@ -110,7 +110,7 @@ public final class ReachabilityMonitor: ObservableObject {
         session.dataTask(with: request) { [weak self] _, response, error in
             let latency = Date().timeIntervalSince(start)
             let success = error == nil && response != nil
-            let dnsResolved = Self.resolveHost(from: endpointURLString)
+            let dnsResolved = DNSResolver.canResolveHost(from: endpointURLString)
 
             Task { @MainActor in
                 self?.processCheckResult(success: success, latency: latency, dnsResolved: dnsResolved)
@@ -144,8 +144,4 @@ public final class ReachabilityMonitor: ObservableObject {
         )
     }
 
-    nonisolated private static func resolveHost(from endpoint: String) -> Bool {
-        guard let host = URL(string: endpoint)?.host, host.isEmpty == false else { return false }
-        return !host.isEmpty
-    }
 }
