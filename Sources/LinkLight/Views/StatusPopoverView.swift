@@ -2,6 +2,8 @@ import SwiftUI
 
 struct StatusPopoverView: View {
     @ObservedObject var monitor: ReachabilityMonitor
+    @ObservedObject var settingsStore: LinkLightUserDefaultsStore
+    let openSettings: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -24,6 +26,7 @@ struct StatusPopoverView: View {
             metricRow("DNS", monitor.snapshot.dnsResolved ? "Resolved" : "Unknown/Unavailable")
             metricRow("Latency", formattedLatency(monitor.latency))
             metricRow("Packet loss", formattedPacketLoss(monitor.packetLoss))
+            metricRow("Interval", "\(Int(settingsStore.settings.checkInterval))s")
             metricRow("Last check", formattedDate(monitor.lastCheckedAt))
 
             Divider()
@@ -32,6 +35,9 @@ struct StatusPopoverView: View {
                 Button("Refresh") {
                     monitor.refresh()
                 }
+                Button("Settings") {
+                    openSettings()
+                }
                 Spacer()
                 Button("Quit") {
                     NSApplication.shared.terminate(nil)
@@ -39,7 +45,7 @@ struct StatusPopoverView: View {
             }
         }
         .padding(14)
-        .frame(width: 280)
+        .frame(width: 300)
     }
 
     private func metricRow(_ label: String, _ value: String) -> some View {

@@ -9,7 +9,7 @@ public final class ReachabilityMonitor: ObservableObject {
     private let pathMonitor: NWPathMonitor
     private let pathQueue: DispatchQueue
     private let session: URLSession
-    private let settings: LinkLightSettings
+    @Published public private(set) var settings: LinkLightSettings
     private var timer: Timer?
     private var pingHistory: [Bool] = []
     private var networkAvailable = false
@@ -46,6 +46,14 @@ public final class ReachabilityMonitor: ObservableObject {
     public var lastCheckedAt: Date? { snapshot.lastCheckedAt }
 
     public func refresh() {
+        performReachabilityCheck()
+    }
+
+    public func apply(settings newSettings: LinkLightSettings) {
+        settings = newSettings
+        pingHistory.removeAll()
+        snapshot = ReachabilitySnapshot(endpoint: newSettings.endpointURLString)
+        startTimer()
         performReachabilityCheck()
     }
 
@@ -91,16 +99,18 @@ public final class ReachabilityMonitor: ObservableObject {
             return
         }
 
+        let currentSettings = settings
+        let endpointURLString = currentSettings.endpointURLString
         let start = Date()
-        var request = URLRequest(url: settings.endpointURL)
-        request.timeoutInterval = settings.requestTimeout
+        var request = URLRequest(url: currentSettings.endpointURL)
+        request.timeoutInterval = currentSettings.requestTimeout
         request.cachePolicy = .reloadIgnoringLocalCacheData
         request.httpMethod = "HEAD"
 
         session.dataTask(with: request) { [weak self] _, response, error in
             let latency = Date().timeIntervalSince(start)
             let success = error == nil && response != nil
-            let dnsResolved = Self.resolveHost(from: self?.settings.endpointURLString ?? "")
+            let dnsResolved = Self.resolveHost(from: endpointURLString)
 
             Task { @MainActor in
                 self?.processCheckResult(success: success, latency: latency, dnsResolved: dnsResolved)

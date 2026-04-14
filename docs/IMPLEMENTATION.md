@@ -68,3 +68,17 @@ Status: **passing**
 2. Add a Settings window
 3. Replace basic DNS hinting with actual resolution checks
 4. Add packaging, signing, entitlements, and release automation
+
+
+## Settings and persistence
+
+This pass also adds persisted configuration via `UserDefaults` and a native SwiftUI settings window.
+
+Users can now change:
+- endpoint URL
+- check interval
+- request timeout
+- flaky latency threshold
+- sample history size
+
+Saving settings updates persisted values and reapplies configuration to the live monitor immediately.

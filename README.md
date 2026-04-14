@@ -28,6 +28,8 @@ LinkLight combines:
   - DNS resolution hint
   - last successful check timing
 - Manual refresh action
+- Persisted settings using `UserDefaults`
+- Settings window for endpoint and monitoring thresholds
 - Periodic background checks
 - Build verified successfully on macOS with SwiftPM
 
@@ -80,7 +82,6 @@ swift run
 
 ## Roadmap
 
-- Preferences UI for endpoint and interval
 - Better DNS verification
 - Start at login support
 - Sandboxed packaging and release automation
