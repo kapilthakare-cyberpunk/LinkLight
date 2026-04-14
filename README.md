@@ -1,25 +1,86 @@
 # LinkLight
 
-A macOS menu bar app for true internet reachability monitoring.
+LinkLight is a native macOS menu bar app that shows **actual internet reachability**, not just whether your machine is attached to Wi‑Fi.
 
-## Overview
-LinkLight provides a subtle light indicator in your menu bar to show your actual online status, going beyond the basic "Wi-Fi connected" icon which can be ambiguous.
+## What it does
 
-## Core States
-- 🟢 **Online:** Full internet access.
-- 🟡 **Flaky:** Network connected but internet is unstable (high latency or packet loss).
-- 🔴 **Offline:** No network path or internet is unreachable.
+LinkLight combines:
+- **`NWPathMonitor`** for local network/path availability
+- **active endpoint checks** using `URLSession`
+- **lightweight flakiness detection** based on latency and recent failure history
 
-## Features
-- **Real-time Monitoring:** Uses NWPathMonitor for instant interface updates.
-- **True Reachability:** Periodic background pings to verify end-to-end connectivity.
-- **Detailed Stats:** View latency, packet loss, and last check time in the dropdown.
-- **Customizable:** Set your own ping endpoint (e.g., 1.1.1.1, 8.8.8.8).
+## Status model
 
-## Tech Stack
-- SwiftUI (Native macOS 14+)
-- Network.framework
-- Swift Package Manager
+- **Online** — network path is available and endpoint checks are healthy
+- **Connection Flaky** — path exists, but latency is high or recent failures indicate instability
+- **Offline** — no usable network path or endpoint checks are failing decisively
+- **Unknown** — startup/initial state before a completed check
 
-## Development
-This project is being built using **Gemini CLI** and the **Superpowers** development workflow.
+## Current features
+
+- macOS menu bar extra app
+- Dynamic status icon and color
+- Popover with:
+  - current reachability status
+  - endpoint
+  - latency
+  - packet loss
+  - DNS resolution hint
+  - last successful check timing
+- Manual refresh action
+- Periodic background checks
+- Build verified successfully on macOS with SwiftPM
+
+## Architecture
+
+```text
+LinkLightApp
+  -> ReachabilityMonitor
+      -> NWPathMonitor
+      -> URLSession HEAD check
+      -> ReachabilityEvaluator
+  -> StatusPopoverView
+```
+
+## Project structure
+
+```text
+Sources/LinkLight/
+  Core/
+    LinkLightSettings.swift
+    ReachabilityEvaluator.swift
+    ReachabilityMonitor.swift
+  Models/
+    ReachabilitySnapshot.swift
+    ReachabilityStatus.swift
+  Views/
+    StatusPopoverView.swift
+  LinkLightApp.swift
+
+```
+
+## Build
+
+```sh
+swift build
+```
+
+## Run
+
+```sh
+swift run
+```
+
+## Notes
+
+- Default endpoint: `https://1.1.1.1`
+- Default interval: `20s`
+- Default flakiness latency threshold: `500ms`
+- The app is intentionally lightweight and local-first
+
+## Roadmap
+
+- Preferences UI for endpoint and interval
+- Better DNS verification
+- Start at login support
+- Sandboxed packaging and release automation
