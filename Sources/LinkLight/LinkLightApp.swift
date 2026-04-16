@@ -22,7 +22,7 @@ struct LinkLightApp: App {
             )
         } label: {
             Image(systemName: monitor.status.symbolName)
-                .symbolRenderingMode(.monochrome)
+                .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(monitor.status.color)
                 .accessibilityLabel(monitor.status.accessibilityDescription)
         }
