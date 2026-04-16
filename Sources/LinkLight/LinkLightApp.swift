@@ -21,10 +21,12 @@ struct LinkLightApp: App {
                 openSettings: showSettingsWindow
             )
         } label: {
-            Image(systemName: monitor.status.symbolName)
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(monitor.status.color)
-                .accessibilityLabel(monitor.status.accessibilityDescription)
+            Label {
+                Text(monitor.status.accessibilityDescription)
+            } icon: {
+                Image(systemName: monitor.status.symbolName)
+                    .foregroundStyle(monitor.status.color)
+            }
         }
         .menuBarExtraStyle(.window)
     }
